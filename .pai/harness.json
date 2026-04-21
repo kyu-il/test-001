@@ -1,0 +1,6 @@
+{
+  "version": "1.0",
+  "specFile": "docs/openspec.md",
+  "checkOn": ["pre-commit", "ci"],
+  "rules": ["spec-implementation-match", "api-contract-test"]
+}

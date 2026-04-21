@@ -1,0 +1,37 @@
+{
+  "version": "0.14.2",
+  "mode": "production",
+  "projectName": "test-001",
+  "installedAt": "2026-04-21T02:37:20.336Z",
+  "plugins": ["github", "openspec", "roboco", "omc", "gstack", "harness", "vercel", "supabase"],
+  "edges": [
+    {
+      "from": "harness",
+      "to": "openspec",
+      "via": "specFile",
+      "path": "docs/openspec.md",
+      "description": "harness가 openspec의 API 엔드포인트 목록을 읽어 구현 일치 검증"
+    },
+    {
+      "from": "gstack",
+      "to": "openspec",
+      "via": "endpoints",
+      "path": "docs/openspec.md",
+      "description": "gstack 테스트가 openspec의 각 엔드포인트에 대한 테스트 존재를 요구"
+    },
+    {
+      "from": "omc",
+      "to": "openspec",
+      "via": "domain",
+      "path": ".pai/omc.md",
+      "description": "omc의 도메인 객체가 openspec의 API 요청/응답 모델과 정합"
+    },
+    {
+      "from": "harness",
+      "to": "omc",
+      "via": "businessRules",
+      "path": ".pai/omc.md",
+      "description": "harness가 omc의 비즈니스 규칙을 검증 규칙으로 참조"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jiran API Test</title>
+  </head>
+  <body>
+    <h2>Jiran API 호출 테스트</h2>
+    <div id="output"></div>
+
+    <script>
+      // API 설정
+      const API_URL =
+        "https://jiran-api.officewave.co.kr/api/v1/hooks/{token}/notifications";
+
+      // 테스트 페이로드
+      const payload = {
+        to: ["{받는사람 이메일}"],
+        template: "text",
+        type: "static",
+        important: false,
+        items: {
+          header: "캘린더 로그인 알림 테스트",
+          contents: `캘린더에 로그인 하였습니다.`,
+          buttons: [
+            {
+              label: "캘린더 바로가기",
+              type: "link",
+              href: "http://localhost:3000",
+            },
+          ],
+          button_layout: "vertical",
+        },
+      };
+
+      // API 호출 함수
+      async function callApi() {
+        const output = document.getElementById("output");
+
+        try {
+          console.log("API 호출 시작");
+          console.log("요청 URL:", API_URL);
+          console.log("요청 데이터:", payload);
+
+          output.innerHTML = "<p>API 호출 중...</p>";
+
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          console.log("응답 상태:", response.status, response.statusText);
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          console.log("응답 데이터:", result);
+
+          // 결과 표시
+          output.innerHTML = `
+                    <h3>성공</h3>
+                    <p><strong>상태:</strong> ${response.status}</p>
+                    <p><strong>응답:</strong></p>
+                    <pre>${JSON.stringify(result, null, 2)}</pre>
+                `;
+        } catch (error) {
+          console.error("API 호출 실패:", error);
+
+          output.innerHTML = `
+                    <h3>실패</h3>
+                    <p><strong>오류:</strong> ${error.message}</p>
+                    <p><strong>URL:</strong> ${API_URL}</p>
+                `;
+        }
+      }
+
+      // 페이지 로드 시 실행
+      document.addEventListener("DOMContentLoaded", callApi);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+{
+  "version": "1.0",
+  "scenario": "production",
+  "preset": "production",
+  "gates": {
+    "preCommit": {
+      "enabled": true,
+      "scripts": ["format", "lint"]
+    },
+    "prePush": {
+      "enabled": true,
+      "scripts": ["typecheck", "test:unit"]
+    },
+    "ci": {
+      "enabled": true,
+      "scripts": ["lint", "typecheck", "test", "build"],
+      "triggers": {
+        "pullRequest": true,
+        "push": {
+          "branches": ["main", "develop"]
+        }
+      },
+      "nodeVersion": "20"
+    }
+  },
+  "scripts": [
+    {
+      "name": "format",
+      "command": "prettier --write .",
+      "required": true
+    },
+    {
+      "name": "lint",
+      "command": "eslint .",
+      "required": true
+    },
+    {
+      "name": "lint:fix",
+      "command": "eslint . --fix",
+      "required": false
+    },
+    {
+      "name": "typecheck",
+      "command": "tsc --noEmit",
+      "required": true
+    },
+    {
+      "name": "build",
+      "command": "next build",
+      "required": true
+    },
+    {
+      "name": "test",
+      "command": "vitest run",
+      "required": true
+    },
+    {
+      "name": "test:unit",
+      "command": "vitest run --project unit",
+      "required": true
+    },
+    {
+      "name": "test:integration",
+      "command": "vitest run --project integration",
+      "required": false
+    },
+    {
+      "name": "test:smoke",
+      "command": "npm run build && node scripts/smoke.js",
+      "required": false
+    },
+    {
+      "name": "verify",
+      "command": "npm run lint && npm run typecheck && npm run test",
+      "required": true
+    },
+    {
+      "name": "verify:full",
+      "command": "npm run lint && npm run typecheck && npm run test && npm run build",
+      "required": false
+    }
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run lint:fix)",
+      "Bash(npm run format)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run test)",
+      "Bash(npm run build)",
+      "Read(**)",
+      "Edit(**)",
+      "Bash(npm run test:unit)",
+      "Bash(npm run test:integration)",
+      "Bash(npm run verify)",
+      "Bash(npm run verify:full)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(git push --force)",
+      "Bash(git reset --hard)",
+      "Bash(curl * | sh)",
+      "Bash(npx -y *)",
+      "Bash(npm publish)",
+      "Bash(git push origin main)"
+    ]
+  },
+  "rules": {
+    "specBeforeCode": true,
+    "prMergeRequiresReview": true,
+    "branchProtection": true,
+    "requireWorkflow": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+  "currentStage": "environment",
+  "stageHistory": [
+    {
+      "stage": "environment",
+      "status": "done",
+      "startedAt": "2026-04-21T02:35:54.237Z",
+      "by": "pai init",
+      "endedAt": "2026-04-21T02:37:20.670Z"
+    }
+  ],
+  "lock": null,
+  "gates": {}
+}

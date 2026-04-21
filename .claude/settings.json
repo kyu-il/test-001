@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(npm run *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:fix)",
+      "Bash(npm run format)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run test)",
+      "Bash(npm run build)",
+      "Read(**)",
+      "Edit(**)",
+      "Bash(npm run test:unit)",
+      "Bash(npm run test:integration)",
+      "Bash(npm run verify)",
+      "Bash(npm run verify:full)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(rm -rf /)",
+      "Bash(git push --force)",
+      "Bash(git reset --hard)",
+      "Bash(curl * | sh)",
+      "Bash(npx -y *)",
+      "Bash(npm publish)",
+      "Bash(git push origin main)"
+    ]
+  }
+}

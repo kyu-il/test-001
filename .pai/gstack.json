@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "testRunner": "jest",
+  "coverageThreshold": {
+    "global": {
+      "lines": 80
+    }
+  },
+  "qualityGates": ["lint", "typecheck", "test"]
+}

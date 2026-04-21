@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample RP — 로그인</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F5F7;
+  --card: #FFFFFF;
+  --border: #E1E7EF;
+  --border-focus: #3362FB;
+  --ink: #1A1A2E;
+  --ink-60: #64748B;
+  --ink-40: #94A3B8;
+  --brand: #331E62;
+  --brand-hover: #0F1729;
+  --blue: #3362FB;
+  --blue-bg: #EEF2FF;
+  --hover-bg: #F1F5F9;
+  --active-bg: #E2E8F0;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 24px rgba(0,0,0,.06);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--bg); color: var(--ink); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+
+.page { display: flex; width: 880px; max-width: 96vw; min-height: 520px; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+
+/* ── Left: Login Form ── */
+.form-side {
+  flex: 1; background: var(--card); padding: 48px 40px; display: flex; flex-direction: column; justify-content: center;
+}
+.logo { font-size: 22px; font-weight: 700; color: var(--brand); margin-bottom: 32px; letter-spacing: -.3px; }
+.logo span { color: var(--blue); }
+.title { font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.subtitle { font-size: 13px; color: var(--ink-60); margin-bottom: 28px; }
+
+/* ── OfficeNEXT SSO Button (Design Guide Spec) ── */
+.btn-officenext {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  padding: 8px 16px;
+  background: #FFFFFF;
+  color: #331E62;
+  border: 1px solid #E1E7EF;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: normal;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-officenext:hover {
+  background: #F1F5F9;
+  color: #0F1729;
+}
+.btn-officenext:active {
+  background: #E2E8F0;
+  color: #0F1729;
+  border-color: #CBD5E1;
+}
+.btn-officenext:disabled {
+  background: #F8FAFC;
+  color: #94A3B8;
+  border-color: #E2E8F0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-officenext:focus-visible {
+  outline: 2px solid #3362FB;
+  outline-offset: 2px;
+}
+.btn-officenext svg { flex-shrink: 0; }
+
+/* ── Divider ── */
+.divider {
+  display: flex; align-items: center; gap: 14px; margin: 22px 0;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.divider span { font-size: 12px; color: var(--ink-40); font-weight: 500; white-space: nowrap; }
+
+/* ── Form Fields ── */
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-60); margin-bottom: 6px; }
+.field input {
+  width: 100%; height: 44px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-family: var(--font); font-size: 14px; color: var(--ink); background: var(--card);
+  transition: border-color .15s, box-shadow .15s;
+}
+.field input::placeholder { color: var(--ink-40); }
+.field input:focus { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(51,98,251,.1); }
+
+.btn-submit {
+  width: 100%; height: 48px; border: none; border-radius: var(--radius-sm);
+  background: var(--blue); color: #fff; font-family: var(--font); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background .15s; margin-top: 4px;
+}
+.btn-submit:hover { background: #2850E0; }
+.btn-submit:active { background: #1D40C0; }
+
+.links { display: flex; justify-content: space-between; margin-top: 14px; }
+.links a { font-size: 12px; color: var(--blue); text-decoration: none; font-weight: 500; }
+.links a:hover { text-decoration: underline; }
+
+/* ── Right: Promo Panel ── */
+.promo-side {
+  width: 340px; background: linear-gradient(135deg, #331E62 0%, #3362FB 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 32px; color: #fff; text-align: center;
+}
+.promo-icon { width: 72px; height: 72px; margin-bottom: 24px; opacity: .9; }
+.promo-side h2 { font-size: 18px; font-weight: 700; margin-bottom: 10px; line-height: 1.5; }
+.promo-side p { font-size: 13px; line-height: 1.7; color: rgba(255,255,255,.75); }
+
+.footer { position: fixed; bottom: 16px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--ink-40); }
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .page { flex-direction: column; min-height: auto; }
+  .promo-side { width: 100%; padding: 28px 24px; order: -1; }
+  .form-side { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- Login Form -->
+  <div class="form-side">
+    <div class="logo">Sample<span>RP</span></div>
+    <div class="title">로그인</div>
+    <div class="subtitle">SampleRP와 함께 업무를 시작하세요.</div>
+
+    <!-- OfficeNEXT SSO Button -->
+    <button class="btn-officenext" onclick="handleOfficeNEXT()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" width="24" height="24" aria-hidden="true">
+        <g clip-path="url(#on-clip)">
+          <path fill="url(#on-grad)" d="M16 0H0v16h16z"/>
+          <path fill="#95AFFF" d="m9.714 3.808.018-.026h2.31l-2.8 4.08 3.003 4.356H9.921L8.039 9.49 6.777 7.862z"/>
+          <path fill="#fff" d="m6.286 3.808-.018-.026H3.957l2.8 4.08-3.002 4.356h2.324L7.963 9.49l1.26-1.629z"/>
+        </g>
+        <defs>
+          <linearGradient id="on-grad" x1="-370.255" x2="1429.75" y1="1745.67" y2="456.439" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#0D1C4B"/><stop offset="0.983" stop-color="#3362FB"/>
+          </linearGradient>
+          <clipPath id="on-clip"><rect width="16" height="16" fill="#fff" rx="6"/></clipPath>
+        </defs>
+      </svg>
+      오피스넥스트로 로그인
+    </button>
+
+    <div class="divider"><span>또는</span></div>
+
+    <!-- Email/Password Form -->
+    <div class="field">
+      <label for="email">이메일</label>
+      <input type="email" id="email" placeholder="이메일을 입력하세요">
+    </div>
+    <div class="field">
+      <label for="pw">비밀번호</label>
+      <input type="password" id="pw" placeholder="비밀번호를 입력하세요">
+    </div>
+    <button class="btn-submit" onclick="handleLogin()">로그인</button>
+    <div class="links">
+      <a href="#">비밀번호 찾기</a>
+      <a href="#">회원가입</a>
+    </div>
+  </div>
+
+  <!-- Promo Panel -->
+  <div class="promo-side">
+    <svg class="promo-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="16" fill="rgba(255,255,255,.15)"/>
+      <path fill="rgba(255,255,255,.4)" d="m38.856 15.232.072-.104h9.24l-11.2 16.32 12.012 17.424H39.684l-7.528-9.96-5.048-6.512z"/>
+      <path fill="#fff" d="m25.144 15.232-.072-.104H15.83l11.2 16.32-12.01 17.424h9.296l7.528-9.96 5.04-6.516z"/>
+    </svg>
+    <h2>오피스넥스트 IdP로<br>안전하게 통합 인증</h2>
+    <p>SSO 연동으로 하나의 계정으로<br>모든 서비스에 안전하게 접속하세요.</p>
+  </div>
+</div>
+
+<div class="footer">&copy; 2026 SampleRP — OfficeNEXT SSO Integration Demo</div>
+
+<script>
+function handleOfficeNEXT() {
+  // OfficeNEXT IdP 인증 엔드포인트로 리다이렉트
+  // 실제 구현 시 client_id, redirect_uri, scope 등 파라미터 포함
+  const params = new URLSearchParams({
+    client_id: 'YOUR_CLIENT_ID',
+    redirect_uri: window.location.origin + '/auth/callback',
+    response_type: 'code',
+    scope: 'openid profile email',
+    state: crypto.randomUUID()
+  });
+  alert('오피스넥스트 IdP 인증 페이지로 이동합니다.\n\n' +
+        'Redirect URL:\nhttps://idp.officenext.co.kr/authorize?' + params.toString().substring(0, 80) + '...');
+}
+
+function handleLogin() {
+  const email = document.getElementById('email').value;
+  const pw = document.getElementById('pw').value;
+  if (!email || !pw) { alert('이메일과 비밀번호를 입력하세요.'); return; }
+  alert('일반 로그인 처리 (데모)');
+}
+</script>
+</body>
+</html>

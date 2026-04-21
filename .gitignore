@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Build
+dist/
+build/
+.next/
+out/
+
+# Services
+.vercel
+.supabase
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# PAI / OMC state
+.omc/state/
+.omc/sessions/
+.omc/logs/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
