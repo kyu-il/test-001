@@ -8,7 +8,7 @@ import { WeekView } from '@/components/calendar/WeekView';
 import { DaySheet } from '@/components/calendar/DaySheet';
 import { EventDialog } from '@/components/calendar/EventDialog';
 import { CategoryManager } from '@/components/calendar/CategoryManager';
-import { localRepository as repo } from '@/lib/repository.local';
+import { supabaseRepository as repo } from '@/lib/repository.supabase';
 import type { CalendarEvent, Category, NewCategory, NewEvent } from '@/lib/types';
 
 type ViewMode = 'month' | 'week';
