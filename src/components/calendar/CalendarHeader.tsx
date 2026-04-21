@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { UserProfile } from '@/components/auth/UserProfile';
+import type { SessionUser } from '@/lib/session';
 
 type ViewMode = 'month' | 'week';
 
@@ -17,6 +19,8 @@ interface Props {
   onViewModeChange: (m: ViewMode) => void;
   onNewEvent: () => void;
   onManageCategories: () => void;
+  user?: SessionUser | null;
+  onLogout?: () => void;
 }
 
 export function CalendarHeader({
@@ -27,7 +31,9 @@ export function CalendarHeader({
   onToday,
   onViewModeChange,
   onNewEvent,
-  onManageCategories
+  onManageCategories,
+  user,
+  onLogout
 }: Props) {
   const title =
     viewMode === 'month'
@@ -93,6 +99,7 @@ export function CalendarHeader({
           <Plus className="h-4 w-4" />
           <span className="hidden sm:inline">일정 추가</span>
         </Button>
+        {user && onLogout && <UserProfile user={user} onLogout={onLogout} />}
       </div>
     </header>
   );

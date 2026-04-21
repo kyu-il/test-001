@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { addMonths, addWeeks, format } from 'date-fns';
 import { CalendarHeader } from '@/components/calendar/CalendarHeader';
 import { MonthView } from '@/components/calendar/MonthView';
@@ -10,6 +11,7 @@ import { EventDialog } from '@/components/calendar/EventDialog';
 import { CategoryManager } from '@/components/calendar/CategoryManager';
 import { supabaseRepository as repo } from '@/lib/repository.supabase';
 import type { CalendarEvent, Category, NewCategory, NewEvent } from '@/lib/types';
+import type { SessionUser } from '@/lib/session';
 
 type ViewMode = 'month' | 'week';
 
@@ -18,6 +20,7 @@ function toISO(d: Date) {
 }
 
 export default function CalendarPage() {
+  const router = useRouter();
   const [anchor, setAnchor] = useState<Date>(() => new Date());
   const [viewMode, setViewMode] = useState<ViewMode>('month');
   const [selected, setSelected] = useState<Date | null>(null);
@@ -25,6 +28,7 @@ export default function CalendarPage() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [user, setUser] = useState<SessionUser | null>(null);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogDate, setDialogDate] = useState<Date | null>(null);
@@ -43,6 +47,15 @@ export default function CalendarPage() {
       setLoaded(true);
     })();
   }, [reload]);
+
+  useEffect(() => {
+    fetch('/api/me')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => data && setUser(data))
+      .catch(() => null);
+  }, []);
+
+  const handleLogout = () => router.push('/auth/logout');
 
   const selectedEvents = useMemo(() => {
     if (!selected) return [];
@@ -114,6 +127,8 @@ export default function CalendarPage() {
         onViewModeChange={setViewMode}
         onNewEvent={() => openNewEvent()}
         onManageCategories={() => setCategoryManagerOpen(true)}
+        user={user}
+        onLogout={handleLogout}
       />
 
       {loaded ? (
